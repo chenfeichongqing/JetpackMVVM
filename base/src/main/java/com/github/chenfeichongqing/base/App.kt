@@ -52,7 +52,7 @@ class App : BaseApp() {
         jetpackMvvmLog = BuildConfig.DEBUG
 
         //防止项目崩溃，崩溃后打开错误界面
-        CaocConfig.Builder.create()
+    /*    CaocConfig.Builder.create()
             .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //default: CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM
             .enabled(true)//是否启用CustomActivityOnCrash崩溃拦截机制 必须启用！不然集成这个库干啥？？？
             .showErrorDetails(false) //是否必须显示包含错误详细信息的按钮 default: true
@@ -62,7 +62,7 @@ class App : BaseApp() {
             .minTimeBetweenCrashesMs(2000) //应用程序崩溃之间必须经过的时间 default: 3000
             .restartActivity(FlashActivity::class.java) // 重启的activity
             .errorActivity(FlashActivity::class.java) //发生错误跳转的activity
-            .apply()
+            .apply()*/
     }
 
 }

@@ -4,8 +4,7 @@ import android.view.View
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
-import com.github.chenfeichongqing.R
-
+import com.github.chenfeichongqing.mvvmlib.R
 
 /**
  * 作者　: hegaojian
@@ -13,7 +12,6 @@ import com.github.chenfeichongqing.R
  * 描述　: Hide - Show NavHostFragment
  */
 class NavHostFragmentHideShow : NavHostFragment() {
-
 
     /**
      * @return 使用自己的FragmentNavigator

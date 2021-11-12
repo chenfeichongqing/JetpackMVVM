@@ -19,7 +19,7 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
     /**
      * 是否需要使用DataBinding 供子类BaseVmDbActivity修改，用户请慎动
      */
-    private var isUserDb = false
+    private var isDataBinding= false
 
     lateinit var mViewModel: VM
 
@@ -33,7 +33,7 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!isUserDb) {
+        if (!isDataBinding) {
             setContentView(layoutId())
         } else {
             initDataBind()
@@ -99,8 +99,8 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
         }
     }
 
-    fun userDataBinding(isUserDb: Boolean) {
-        this.isUserDb = isUserDb
+    fun userDataBinding(isDataBinding: Boolean) {
+        this.isDataBinding = isDataBinding
     }
 
     /**

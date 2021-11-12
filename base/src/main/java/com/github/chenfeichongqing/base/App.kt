@@ -4,11 +4,9 @@ package com.github.chenfeichongqing.base
 import android.content.Context
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
-import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.tencent.mmkv.MMKV
 import com.github.chenfeichongqing.base.event.AppViewModel
 import com.github.chenfeichongqing.base.event.EventViewModel
-import com.github.chenfeichongqing.base.ui.FlashActivity
 import com.github.chenfeichongqing.base.widget.loadCallBack.EmptyCallback
 import com.github.chenfeichongqing.base.widget.loadCallBack.ErrorCallback
 import com.github.chenfeichongqing.base.widget.loadCallBack.LoadingCallback

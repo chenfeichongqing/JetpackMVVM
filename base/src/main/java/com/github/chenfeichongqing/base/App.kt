@@ -1,6 +1,9 @@
 package com.github.chenfeichongqing.base
 
 
+import android.content.Context
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.tencent.mmkv.MMKV
 import com.github.chenfeichongqing.base.event.AppViewModel
@@ -11,6 +14,8 @@ import com.github.chenfeichongqing.base.widget.loadCallBack.ErrorCallback
 import com.github.chenfeichongqing.base.widget.loadCallBack.LoadingCallback
 import com.github.chenfeichongqing.mvvmlib.base.BaseApp
 import com.github.chenfeichongqing.mvvmlib.ext.util.jetpackMvvmLog
+import com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBar
+import com.github.chenfeichongqing.mvvmlib.view.toolbar.style.LightBarStyle
 import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
 
@@ -50,7 +55,20 @@ class App : BaseApp() {
             .commit()
         //初始化Bugly
         jetpackMvvmLog = BuildConfig.DEBUG
+        // 初始化 TitleBar 默认样式
 
+        // 初始化 TitleBar 默认样式
+        TitleBar.setDefaultStyle(object : LightBarStyle() {
+           override fun newTitleView(context: Context?): TextView? {
+                return AppCompatTextView(context!!)
+            }
+            override  fun newLeftView(context: Context?): TextView? {
+                return AppCompatTextView(context!!)
+            }
+            override fun newRightView(context: Context?): TextView? {
+                return AppCompatTextView(context!!)
+            }
+        })
         //防止项目崩溃，崩溃后打开错误界面
     /*    CaocConfig.Builder.create()
             .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //default: CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM

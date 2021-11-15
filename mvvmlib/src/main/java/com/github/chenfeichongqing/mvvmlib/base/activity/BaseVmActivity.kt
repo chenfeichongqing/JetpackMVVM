@@ -1,13 +1,18 @@
 package com.github.chenfeichongqing.mvvmlib.base.activity
 
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.github.chenfeichongqing.mvvmlib.R
 import com.github.chenfeichongqing.mvvmlib.base.viewmodel.BaseViewModel
 import com.github.chenfeichongqing.mvvmlib.ext.getVmClazz
 import com.github.chenfeichongqing.mvvmlib.base.network.manager.NetState
 import com.github.chenfeichongqing.mvvmlib.base.network.manager.NetworkStateManager
+import com.github.chenfeichongqing.mvvmlib.utilcode.util.BarUtils
+import com.github.chenfeichongqing.mvvmlib.utilcode.util.ColorUtils
 
 /**
  * 作者　: hegaojian
@@ -21,6 +26,7 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
      */
     private var isDataBinding= false
 
+
     lateinit var mViewModel: VM
 
     abstract fun layoutId(): Int
@@ -32,12 +38,17 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
     abstract fun dismissLoading()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (isFullScreen()) {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
         super.onCreate(savedInstanceState)
         if (!isDataBinding) {
             setContentView(layoutId())
         } else {
             initDataBind()
         }
+        initstatusBar()
         init(savedInstanceState)
     }
 
@@ -107,4 +118,26 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
      * 供子类BaseVmDbActivity 初始化Databinding操作
      */
     open fun initDataBind() {}
+
+
+    //是否状态栏字体黑色
+    open fun isLight(): Boolean {
+        return true
+    }
+    //状态栏颜色
+    open fun statusColor():Int{
+        return  ColorUtils.getColor(R.color.colorPrimary)
+
+    }
+    private fun initstatusBar(){
+        BarUtils.setStatusBarLightMode(this, isLight())
+        BarUtils.setStatusBarColor(this, statusColor())
+    }
+
+    //是否全屏
+    open fun isFullScreen(): Boolean {
+        return false
+    }
+
+
 }

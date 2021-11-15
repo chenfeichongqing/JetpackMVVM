@@ -7,7 +7,8 @@ import com.github.chenfeichongqing.mvvmlib.util.startActivity
 class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity<MainActivity>()
-        finish()
+        MainActivity.start(this);
+        //startActivity<MainActivity>()
+        //finish()
     }
 }

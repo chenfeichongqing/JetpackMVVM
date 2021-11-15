@@ -1,11 +1,15 @@
 package com.github.chenfeichongqing.mvvmlib.ext.view
 
+import android.app.Activity
+import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.os.SystemClock
 import android.view.View
 import android.widget.ImageView
+import com.github.chenfeichongqing.mvvmlib.R
 
 /**
  * 设置view显示
@@ -111,7 +115,36 @@ fun View.clickNoRepeat(interval: Long = 500, action: (view: View) -> Unit) {
     }
 }
 
+//同一个界面共用点击事件，上面的方法有一个问题，
+// 比如使用两个手指同时点击两个不同的按钮，按钮的功能都是新开页面，
+// 那么有可能会新开两个页面。因为 Rxjava 这种方式是针对单个控件实现防止重复点击，不是多个控件。
+fun View.onSingleClick(
+    interval: Int = 500,
+    isShareSingleClick: Boolean = true,
+    listener: (View) -> Unit
+) {
+    setOnClickListener {
+        val target = if (isShareSingleClick) getActivity(this)?.window?.decorView ?: this else this
+        val millis = target.getTag(R.id.single_click_tag_last_single_click_millis) as? Long ?: 0
+        if (SystemClock.uptimeMillis() - millis >= interval) {
+            target.setTag(
+                R.id.single_click_tag_last_single_click_millis, SystemClock.uptimeMillis()
+            )
+            listener.invoke(this)
+        }
+    }
+}
 
+private fun getActivity(view: View): Activity? {
+    var context = view.context
+    while (context is ContextWrapper) {
+        if (context is Activity) {
+            return context
+        }
+        context = context.baseContext
+    }
+    return null
+}
 fun Any?.notNull(notNullAction:(value:Any) ->Unit,nullAction1:() ->Unit){
     if(this!=null){
         notNullAction.invoke(this)

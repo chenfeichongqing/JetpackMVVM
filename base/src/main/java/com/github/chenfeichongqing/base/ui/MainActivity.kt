@@ -2,13 +2,12 @@ package com.github.chenfeichongqing.base.ui
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.os.Bundle
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.github.chenfeichongqing.base.R
+import com.github.chenfeichongqing.mvvmlib.base.activity.BaseVmActivity
+import com.github.chenfeichongqing.mvvmlib.base.viewmodel.BaseViewModel
 import com.github.chenfeichongqing.mvvmlib.util.PermissionHelper
 import com.github.chenfeichongqing.mvvmlib.utilcode.constant.PermissionConstants
+import com.github.chenfeichongqing.mvvmlib.utilcode.util.ColorUtils
 import com.github.chenfeichongqing.mvvmlib.utilcode.util.PermissionUtils
 
 
@@ -20,7 +19,7 @@ import com.github.chenfeichongqing.mvvmlib.utilcode.util.PermissionUtils
  * desc  : MainActivity
  * ```
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseVmActivity<BaseViewModel>() {
 
 
     companion object {
@@ -35,10 +34,22 @@ class MainActivity : AppCompatActivity() {
             }, PermissionConstants.LOCATION)
         }
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        window.setBackgroundDrawable(null)
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+    override fun layoutId(): Int {
+      return R.layout.activity_main
     }
+
+    override fun isLight(): Boolean {
+        return true
+    }
+
+    override fun statusColor(): Int {
+        return ColorUtils.getColor(R.color.colorPrimary)
+    }
+
+    override fun createObserver() {
+
+    }
+
 
 }

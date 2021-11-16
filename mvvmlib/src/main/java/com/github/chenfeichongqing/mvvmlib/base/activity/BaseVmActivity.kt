@@ -1,24 +1,21 @@
 package com.github.chenfeichongqing.mvvmlib.base.activity
 
 import android.os.Bundle
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.chenfeichongqing.mvvmlib.R
-import com.github.chenfeichongqing.mvvmlib.base.viewmodel.BaseViewModel
-import com.github.chenfeichongqing.mvvmlib.ext.getVmClazz
 import com.github.chenfeichongqing.mvvmlib.base.network.manager.NetState
 import com.github.chenfeichongqing.mvvmlib.base.network.manager.NetworkStateManager
-import com.github.chenfeichongqing.mvvmlib.ext.view.clickNoRepeat
-import com.github.chenfeichongqing.mvvmlib.ext.view.onSingleClick
+import com.github.chenfeichongqing.mvvmlib.base.viewmodel.BaseViewModel
+import com.github.chenfeichongqing.mvvmlib.ext.getVmClazz
 import com.github.chenfeichongqing.mvvmlib.utilcode.util.BarUtils
-import com.github.chenfeichongqing.mvvmlib.utilcode.util.ClickUtils
 import com.github.chenfeichongqing.mvvmlib.utilcode.util.ColorUtils
-import com.github.chenfeichongqing.mvvmlib.view.toolbar.OnTitleBarListener
-import com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBar
+import com.github.chenfeichongqing.mvvmlib.view.SaasNavBar
+import com.google.android.material.appbar.AppBarLayout
 
 /**
  * 作者　: hegaojian
@@ -32,16 +29,21 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
      */
     private var isDataBinding= false
 
-    private var titleBar:TitleBar? = null
+    //导航栏背景
+    protected var appBar: AppBarLayout? = null
+
+    protected var navBar: SaasNavBar? = null
+
+    protected var toolbar: Toolbar? = null
 
     lateinit var mViewModel: VM
 
     abstract fun layoutId(): Int
 
 
-    abstract fun showLoading(message: String = "请求网络中...")
+    open fun showLoading(message: String = "请求网络中..."){}
 
-    abstract fun dismissLoading()
+    open fun dismissLoading(){}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (isFullScreen()) {
@@ -69,13 +71,13 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
     }
 
     open fun initView(savedInstanceState: Bundle?){
-        titleBar = findViewById(R.id.titlebar)
-        titleBar?.leftView?.onSingleClick {
-            this.finish()
+        toolbar = findViewById(R.id.toolbar)
+        navBar = findViewById(R.id.nav_bar)
+        navBar?.setBackListener {
+            finish()
         }
-        titleBar?.leftView?.setTextColor(ColorUtils.getColor(R.color.base_color_333333))
-        titleBar?.titleView?.setTextColor(ColorUtils.getColor(R.color.base_color_333333))
-        titleBar?.setOnTitleBarLeftListener { finish() }
+        navBar?.rightView?.setTextColor(ColorUtils.getColor(R.color.base_color_333333))
+        setMainTitle("测试")
     }
 
     /**
@@ -148,12 +150,20 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
     private fun initstatusBar(){
         BarUtils.setStatusBarLightMode(this, isLight())
         BarUtils.setStatusBarColor(this, statusColor())
+
     }
 
     //是否全屏
     open fun isFullScreen(): Boolean {
         return false
     }
-
+    /**
+     * 设置主标题
+     *
+     * @param title 标题字符串
+     */
+    protected fun setMainTitle(title: String?) {
+        navBar?.setTitle(title)
+    }
 
 }

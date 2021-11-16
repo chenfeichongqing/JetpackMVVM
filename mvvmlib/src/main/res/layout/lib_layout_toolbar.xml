@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBar
+<com.github.chenfeichongqing.mvvmlib.view.SaasNavBar
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/titlebar"
+    android:id="@+id/nav_bar"
     android:layout_width="match_parent"
-    app:title="默认的标题栏"
-    android:layout_height="@dimen/height_toolbar"
-    />
+    android:layout_height="wrap_content" />

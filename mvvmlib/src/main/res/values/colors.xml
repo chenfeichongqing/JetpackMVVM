@@ -74,4 +74,12 @@
     <color name="base_color_999999">#999999</color>
     <color name="base_color_cccccc">#CCCCCC</color>
     <color name="base_color_ededed">#EDEDED</color>
+
+
+    <!--导航栏配置颜色-->
+    <color name="itemBarColorStart">@color/white</color>
+    <color name="itemBarColorEnd">@color/white</color>
+
+    <!--会话导航栏文字颜色-->
+    <color name="base_bar_title_color">@color/base_color_333333</color>
 </resources>

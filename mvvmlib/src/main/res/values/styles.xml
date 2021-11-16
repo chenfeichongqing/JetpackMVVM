@@ -13,15 +13,10 @@
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowDisablePreview">true</item>
     </style>
-    <style name="TitleBarStyle">
-        <item name="android:background">@drawable/bar_drawable_placeholder</item>
-        <item name="leftIcon">@drawable/bar_drawable_placeholder</item>
-        <item name="leftBackground">@drawable/bar_drawable_placeholder</item>
-        <item name="rightBackground">@drawable/bar_drawable_placeholder</item>
-        <item name="title">@string/bar_string_placeholder</item>
-        <item name="leftTitle">@string/bar_string_placeholder</item>
-        <item name="rightTitle">@string/bar_string_placeholder</item>
-        <item name="lineDrawable">@drawable/bar_drawable_placeholder</item>
+    <!-- ToolBar菜单样式 -->
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="actionMenuTextColor">@color/base_bar_title_color</item> <!-- 菜单字体的颜色-->
+        <item name="android:textSize">14sp</item> <!--  字体大小-->
     </style>
 
     <style name="CommonLoadingDialogStyle">

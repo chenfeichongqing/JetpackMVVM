@@ -1,6 +1,7 @@
 package com.github.chenfeichongqing.mvvmlib.base.activity
 
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +12,13 @@ import com.github.chenfeichongqing.mvvmlib.base.viewmodel.BaseViewModel
 import com.github.chenfeichongqing.mvvmlib.ext.getVmClazz
 import com.github.chenfeichongqing.mvvmlib.base.network.manager.NetState
 import com.github.chenfeichongqing.mvvmlib.base.network.manager.NetworkStateManager
+import com.github.chenfeichongqing.mvvmlib.ext.view.clickNoRepeat
+import com.github.chenfeichongqing.mvvmlib.ext.view.onSingleClick
 import com.github.chenfeichongqing.mvvmlib.utilcode.util.BarUtils
+import com.github.chenfeichongqing.mvvmlib.utilcode.util.ClickUtils
 import com.github.chenfeichongqing.mvvmlib.utilcode.util.ColorUtils
+import com.github.chenfeichongqing.mvvmlib.view.toolbar.OnTitleBarListener
+import com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBar
 
 /**
  * 作者　: hegaojian
@@ -26,12 +32,12 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
      */
     private var isDataBinding= false
 
+    private var titleBar:TitleBar? = null
 
     lateinit var mViewModel: VM
 
     abstract fun layoutId(): Int
 
-    abstract fun initView(savedInstanceState: Bundle?)
 
     abstract fun showLoading(message: String = "请求网络中...")
 
@@ -60,6 +66,16 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
         NetworkStateManager.instance.mNetworkStateCallback.observe(this, Observer {
             onNetworkStateChanged(it)
         })
+    }
+
+    open fun initView(savedInstanceState: Bundle?){
+        titleBar = findViewById(R.id.titlebar)
+        titleBar?.leftView?.onSingleClick {
+            this.finish()
+        }
+        titleBar?.leftView?.setTextColor(ColorUtils.getColor(R.color.base_color_333333))
+        titleBar?.titleView?.setTextColor(ColorUtils.getColor(R.color.base_color_333333))
+        titleBar?.setOnTitleBarLeftListener { finish() }
     }
 
     /**

@@ -40,8 +40,13 @@ public class TitleBar extends FrameLayout
     private final TitleBarStyle mCurrentStyle;
 
     /** 监听器对象 */
-    private OnTitleBarListener mListener;
+    private OnTitleBarLeftListener mLeftListener;
 
+    /** 监听器对象 */
+    private OnTitleBarRightListener mRightListener;
+
+    /** 监听器对象 */
+    private OnTitleBarTitleListener mTitleListener;
     /** 标题栏子控件 */
     private final TextView mLeftView, mTitleView, mRightView;
     private final View mLineView;
@@ -58,7 +63,7 @@ public class TitleBar extends FrameLayout
     private int mLeftIconGravity, mTitleIconGravity, mRightIconGravity;
 
     /** 图标着色器 */
-    private int mLeftIconTint, mTitleIconTint, mRightIconTint = com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.NO_COLOR;
+    private int mLeftIconTint, mTitleIconTint, mRightIconTint = TitleBarSupport.NO_COLOR;
 
     public TitleBar(Context context) {
         this(context, null);
@@ -154,17 +159,17 @@ public class TitleBar extends FrameLayout
 
         // 图标设置
         if (array.hasValue(R.styleable.TitleBar_titleIcon)) {
-            setTitleIcon(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getDrawable(context, array.getResourceId(R.styleable.TitleBar_titleIcon, 0)));
+            setTitleIcon(TitleBarSupport.getDrawable(context, array.getResourceId(R.styleable.TitleBar_titleIcon, 0)));
         }
 
         if (array.hasValue(R.styleable.TitleBar_leftIcon)) {
             setLeftIcon(array.getResourceId(R.styleable.TitleBar_leftIcon, 0) != R.drawable.bar_drawable_placeholder ?
-                    com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getDrawable(context, array.getResourceId(R.styleable.TitleBar_leftIcon, 0)) :
+                    TitleBarSupport.getDrawable(context, array.getResourceId(R.styleable.TitleBar_leftIcon, 0)) :
                     mCurrentStyle.getBackButtonDrawable(context));
         }
 
         if (array.hasValue(R.styleable.TitleBar_rightIcon)) {
-            setRightIcon(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getDrawable(context, array.getResourceId(R.styleable.TitleBar_rightIcon, 0)));
+            setRightIcon(TitleBarSupport.getDrawable(context, array.getResourceId(R.styleable.TitleBar_rightIcon, 0)));
         }
 
         // 文字颜色设置
@@ -208,7 +213,7 @@ public class TitleBar extends FrameLayout
         // 背景设置
         if (array.hasValue(R.styleable.TitleBar_android_background)) {
             if (array.getResourceId(R.styleable.TitleBar_android_background, 0) == R.drawable.bar_drawable_placeholder) {
-                com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setBackground(this, mCurrentStyle.getTitleBarBackground(context));
+                TitleBarSupport.setBackground(this, mCurrentStyle.getTitleBarBackground(context));
             }
         }
 
@@ -318,9 +323,9 @@ public class TitleBar extends FrameLayout
         }
 
         // TextView 里面必须有东西才能被点击
-        mLeftView.setEnabled(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.isContainContent(mLeftView));
-        mTitleView.setEnabled(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.isContainContent(mTitleView));
-        mRightView.setEnabled(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.isContainContent(mRightView));
+        mLeftView.setEnabled(TitleBarSupport.isContainContent(mLeftView));
+        mTitleView.setEnabled(TitleBarSupport.isContainContent(mTitleView));
+        mRightView.setEnabled(TitleBarSupport.isContainContent(mRightView));
 
         post(new Runnable() {
             @Override
@@ -337,16 +342,12 @@ public class TitleBar extends FrameLayout
 
     @Override
     public void onClick(View view) {
-        if (mListener == null) {
-            return;
-        }
-
-        if (view == mLeftView) {
-            mListener.onLeftClick(view);
-        } else if (view == mRightView) {
-            mListener.onRightClick(view);
-        } else if (view == mTitleView) {
-            mListener.onTitleClick(view);
+        if (mLeftListener!=null&&view == mLeftView) {
+            mLeftListener.onLeftClick(view);
+        } else if (mRightListener!=null&&view == mRightView) {
+            mRightListener.onRightClick(view);
+        } else if (mTitleListener!=null&&view == mTitleView) {
+            mTitleListener.onTitleClick(view);
         }
     }
 
@@ -376,11 +377,27 @@ public class TitleBar extends FrameLayout
     /**
      * 设置标题栏的点击监听器
      */
-    public TitleBar setOnTitleBarListener(com.github.chenfeichongqing.mvvmlib.view.toolbar.OnTitleBarListener listener) {
-        mListener = listener;
+    public TitleBar setOnTitleBarTitleListener(OnTitleBarTitleListener listener) {
+        mTitleListener = listener;
         // 设置监听
         mTitleView.setOnClickListener(this);
-        mLeftView.setOnClickListener(this);
+        return this;
+    }
+
+    /**
+     * 设置标题栏的点击监听器
+     */
+    public TitleBar setOnTitleBarLeftListener(OnTitleBarLeftListener listener) {
+        mLeftListener = listener;
+        // 设置监听
+        mTitleView.setOnClickListener(this);
+        return this;
+    }
+    /**
+     * 设置标题栏的点击监听器
+     */
+    public TitleBar setOnTitleBarRightListener(OnTitleBarRightListener listener) {
+        mRightListener = listener;
         mRightView.setOnClickListener(this);
         return this;
     }
@@ -437,7 +454,7 @@ public class TitleBar extends FrameLayout
      * 设置标题的文字样式
      */
     public TitleBar setTitleStyle(int style) {
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setTextTypeface(mTitleView, style);
+        TitleBarSupport.setTextTypeface(mTitleView, style);
         return this;
     }
 
@@ -450,7 +467,7 @@ public class TitleBar extends FrameLayout
      * 设置左标题的文字样式
      */
     public TitleBar setLeftTitleStyle(int style) {
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setTextTypeface(mLeftView, style);
+        TitleBarSupport.setTextTypeface(mLeftView, style);
         return this;
     }
 
@@ -463,7 +480,7 @@ public class TitleBar extends FrameLayout
      * 设置右边标题的文字样式
      */
     public TitleBar setRightTitleStyle(int style) {
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setTextTypeface(mRightView, style);
+        TitleBarSupport.setTextTypeface(mRightView, style);
         return this;
     }
 
@@ -554,54 +571,54 @@ public class TitleBar extends FrameLayout
      * 设置标题的图标
      */
     public TitleBar setTitleIcon(int id) {
-        return setTitleIcon(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getDrawable(getContext(), id));
+        return setTitleIcon(TitleBarSupport.getDrawable(getContext(), id));
     }
 
     public TitleBar setTitleIcon(Drawable drawable) {
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableTint(drawable, mTitleIconTint);
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableSize(drawable, mTitleIconWidth, mTitleIconHeight);
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setTextCompoundDrawable(mTitleView, drawable, mTitleIconGravity);
+        TitleBarSupport.setDrawableTint(drawable, mTitleIconTint);
+        TitleBarSupport.setDrawableSize(drawable, mTitleIconWidth, mTitleIconHeight);
+        TitleBarSupport.setTextCompoundDrawable(mTitleView, drawable, mTitleIconGravity);
         return this;
     }
 
     public Drawable getTitleIcon() {
-        return com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getTextCompoundDrawable(mTitleView, mTitleIconGravity);
+        return TitleBarSupport.getTextCompoundDrawable(mTitleView, mTitleIconGravity);
     }
 
     /**
      * 设置左标题的图标
      */
     public TitleBar setLeftIcon(int id) {
-        return setLeftIcon(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getDrawable(getContext(), id));
+        return setLeftIcon(TitleBarSupport.getDrawable(getContext(), id));
     }
 
     public TitleBar setLeftIcon(Drawable drawable) {
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableTint(drawable, mLeftIconTint);
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableSize(drawable, mLeftIconWidth, mLeftIconHeight);
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setTextCompoundDrawable(mLeftView, drawable, mLeftIconGravity);
+        TitleBarSupport.setDrawableTint(drawable, mLeftIconTint);
+        TitleBarSupport.setDrawableSize(drawable, mLeftIconWidth, mLeftIconHeight);
+        TitleBarSupport.setTextCompoundDrawable(mLeftView, drawable, mLeftIconGravity);
         return this;
     }
 
     public Drawable getLeftIcon() {
-        return com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getTextCompoundDrawable(mLeftView, mLeftIconGravity);
+        return TitleBarSupport.getTextCompoundDrawable(mLeftView, mLeftIconGravity);
     }
 
     /**
      * 设置右标题的图标
      */
     public TitleBar setRightIcon(int id) {
-        return setRightIcon(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getDrawable(getContext(), id));
+        return setRightIcon(TitleBarSupport.getDrawable(getContext(), id));
     }
 
     public TitleBar setRightIcon(Drawable drawable) {
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableTint(drawable, mRightIconTint);
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableSize(drawable, mRightIconWidth, mRightIconHeight);
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setTextCompoundDrawable(mRightView, drawable, mRightIconGravity);
+       TitleBarSupport.setDrawableTint(drawable, mRightIconTint);
+       TitleBarSupport.setDrawableSize(drawable, mRightIconWidth, mRightIconHeight);
+       TitleBarSupport.setTextCompoundDrawable(mRightView, drawable, mRightIconGravity);
         return this;
     }
 
     public Drawable getRightIcon() {
-        return com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getTextCompoundDrawable(mRightView, mRightIconGravity);
+        return TitleBarSupport.getTextCompoundDrawable(mRightView, mRightIconGravity);
     }
 
     /**
@@ -610,7 +627,7 @@ public class TitleBar extends FrameLayout
     public TitleBar setTitleIconSize(int width, int height) {
         mTitleIconWidth = width;
         mTitleIconHeight = height;
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableSize(getTitleIcon(), width, height);
+        TitleBarSupport.setDrawableSize(getTitleIcon(), width, height);
         return this;
     }
 
@@ -620,7 +637,7 @@ public class TitleBar extends FrameLayout
     public TitleBar setLeftIconSize(int width, int height) {
         mLeftIconWidth = width;
         mLeftIconHeight = height;
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableSize(getLeftIcon(), width, height);
+        TitleBarSupport.setDrawableSize(getLeftIcon(), width, height);
         return this;
     }
 
@@ -630,7 +647,7 @@ public class TitleBar extends FrameLayout
     public TitleBar setRightIconSize(int width, int height) {
         mRightIconWidth = width;
         mRightIconHeight = height;
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableSize(getRightIcon(), width, height);
+        TitleBarSupport.setDrawableSize(getRightIcon(), width, height);
         return this;
     }
 
@@ -663,7 +680,7 @@ public class TitleBar extends FrameLayout
      */
     public TitleBar setTitleIconTint(int color) {
         mTitleIconTint = color;
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableTint(getTitleIcon(), color);
+        TitleBarSupport.setDrawableTint(getTitleIcon(), color);
         return this;
     }
 
@@ -672,7 +689,7 @@ public class TitleBar extends FrameLayout
      */
     public TitleBar setLeftIconTint(int color) {
         mLeftIconTint = color;
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableTint(getLeftIcon(), color);
+        TitleBarSupport.setDrawableTint(getLeftIcon(), color);
         return this;
     }
 
@@ -681,7 +698,7 @@ public class TitleBar extends FrameLayout
      */
     public TitleBar setRightIconTint(int color) {
         mRightIconTint = color;
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setDrawableTint(getRightIcon(), color);
+        TitleBarSupport.setDrawableTint(getRightIcon(), color);
         return this;
     }
 
@@ -689,8 +706,8 @@ public class TitleBar extends FrameLayout
      * 清楚标题的图标着色器
      */
     public TitleBar clearTitleIconTint() {
-        mTitleIconTint = com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.NO_COLOR;
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.clearDrawableTint(getTitleIcon());
+        mTitleIconTint = TitleBarSupport.NO_COLOR;
+        TitleBarSupport.clearDrawableTint(getTitleIcon());
         return this;
     }
 
@@ -698,8 +715,8 @@ public class TitleBar extends FrameLayout
      * 清楚左标题的图标着色器
      */
     public TitleBar clearLeftIconTint() {
-        mLeftIconTint = com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.NO_COLOR;
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.clearDrawableTint(getLeftIcon());
+        mLeftIconTint = TitleBarSupport.NO_COLOR;
+        TitleBarSupport.clearDrawableTint(getLeftIcon());
         return this;
     }
 
@@ -707,8 +724,8 @@ public class TitleBar extends FrameLayout
      * 清楚右标题的图标着色器
      */
     public TitleBar clearRightIconTint() {
-        mRightIconTint = com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.NO_COLOR;
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.clearDrawableTint(getRightIcon());
+        mRightIconTint = TitleBarSupport.NO_COLOR;
+        TitleBarSupport.clearDrawableTint(getRightIcon());
         return this;
     }
 
@@ -719,7 +736,7 @@ public class TitleBar extends FrameLayout
         Drawable drawable = getTitleIcon();
         mTitleIconGravity = gravity;
         if (drawable != null) {
-            com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setTextCompoundDrawable(mTitleView, drawable, gravity);
+            TitleBarSupport.setTextCompoundDrawable(mTitleView, drawable, gravity);
         }
         return this;
     }
@@ -731,7 +748,7 @@ public class TitleBar extends FrameLayout
         Drawable drawable = getLeftIcon();
         mLeftIconGravity = gravity;
         if (drawable != null) {
-            com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setTextCompoundDrawable(mLeftView, drawable, gravity);
+            TitleBarSupport.setTextCompoundDrawable(mLeftView, drawable, gravity);
         }
         return this;
     }
@@ -743,7 +760,7 @@ public class TitleBar extends FrameLayout
         Drawable drawable = getRightIcon();
         mRightIconGravity = gravity;
         if (drawable != null) {
-            com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setTextCompoundDrawable(mRightView, drawable, gravity);
+            TitleBarSupport.setTextCompoundDrawable(mRightView, drawable, gravity);
         }
         return this;
     }
@@ -752,11 +769,11 @@ public class TitleBar extends FrameLayout
      * 设置左标题的背景状态选择器
      */
     public TitleBar setLeftBackground(int id) {
-        return setLeftBackground(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getDrawable(getContext(), id));
+        return setLeftBackground(TitleBarSupport.getDrawable(getContext(), id));
     }
 
     public TitleBar setLeftBackground(Drawable drawable) {
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setBackground(mLeftView, drawable);
+        TitleBarSupport.setBackground(mLeftView, drawable);
         return this;
     }
 
@@ -764,11 +781,11 @@ public class TitleBar extends FrameLayout
      * 设置右标题的背景状态选择器
      */
     public TitleBar setRightBackground(int id) {
-        return setRightBackground(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getDrawable(getContext(), id));
+        return setRightBackground(TitleBarSupport.getDrawable(getContext(), id));
     }
 
     public TitleBar setRightBackground(Drawable drawable) {
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setBackground(mRightView, drawable);
+        TitleBarSupport.setBackground(mRightView, drawable);
         return this;
     }
 
@@ -788,7 +805,7 @@ public class TitleBar extends FrameLayout
     }
 
     public TitleBar setLineDrawable(Drawable drawable) {
-        com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.setBackground(mLineView, drawable);
+        TitleBarSupport.setBackground(mLineView, drawable);
         return this;
     }
 
@@ -807,18 +824,18 @@ public class TitleBar extends FrameLayout
      */
     @SuppressLint("RtlHardcoded")
     public TitleBar setTitleGravity(int gravity) {
-        gravity = com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.getAbsoluteGravity(this, gravity);
+        gravity = TitleBarSupport.getAbsoluteGravity(this, gravity);
 
         // 如果标题的重心为左，那么左边就不能有内容
         if (gravity == Gravity.LEFT &&
-                com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.isContainContent(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.isLayoutRtl(getContext()) ? mRightView : mLeftView)) {
+                TitleBarSupport.isContainContent(TitleBarSupport.isLayoutRtl(getContext()) ? mRightView : mLeftView)) {
             Log.e(LOG_TAG, "Title center of gravity for the left, the left title can not have content");
             return this;
         }
 
         // 如果标题的重心为右，那么右边就不能有内容
         if (gravity == Gravity.RIGHT &&
-                com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.isContainContent(com.github.chenfeichongqing.mvvmlib.view.toolbar.TitleBarSupport.isLayoutRtl(getContext()) ? mLeftView : mRightView)) {
+                TitleBarSupport.isContainContent(TitleBarSupport.isLayoutRtl(getContext()) ? mLeftView : mRightView)) {
             Log.e(LOG_TAG, "Title center of gravity for the right, the right title can not have content");
             return this;
         }
@@ -882,4 +899,41 @@ public class TitleBar extends FrameLayout
     public static void setDefaultStyle(TitleBarStyle style) {
         sGlobalStyle = style;
     }
+
+
+    /**
+     *    author : Android 轮子哥
+     *    github : https://github.com/getActivity/TitleBar
+     *    time   : 2018/08/20
+     *    desc   : 标题栏点击监听接口
+     */
+    public interface OnTitleBarLeftListener {
+
+        /**
+         * 左项被点击
+         *
+         * @param view 被点击的左项View
+         */
+        void onLeftClick(View view);
+    }
+    public interface OnTitleBarRightListener {
+
+        /**
+         * 标题被点击
+         *
+         * @param view 被点击的标题View
+         */
+        void onRightClick(View view);
+    }
+    public interface OnTitleBarTitleListener {
+
+        /**
+         * 左项被点击
+         *
+         * @param view 被点击的左项View
+         */
+        void onTitleClick(View view);
+    }
+
+
 }

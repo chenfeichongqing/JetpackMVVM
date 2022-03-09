@@ -1,13 +1,13 @@
 package com.github.chenfeichongqing.mvvmlib.view;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,20 +16,18 @@ import androidx.databinding.DataBindingUtil;
 import com.github.chenfeichongqing.mvvmlib.R;
 import com.github.chenfeichongqing.mvvmlib.databinding.BaseLibLayoutNavBarBinding;
 import com.github.chenfeichongqing.mvvmlib.util.OnSingleClickListener;
-import com.github.chenfeichongqing.mvvmlib.utilcode.util.ColorUtils;
 
 /**
  * 全局导航样式
  */
 public class SaasNavBar extends FrameLayout {
+
     public SaasNavBar(Context context) {
-        super(context);
-        init(context, null);
+        this(context,null);
     }
 
     public SaasNavBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
+        this(context, attrs,0);
 
     }
     public SaasNavBar(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -37,7 +35,6 @@ public class SaasNavBar extends FrameLayout {
         init(context, attrs);
 
     }
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public SaasNavBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -45,15 +42,13 @@ public class SaasNavBar extends FrameLayout {
     }
 
     private BaseLibLayoutNavBarBinding binding;
-
     private BackListener backListener;
     private SubmitListener submitListener;
 
-    //private int defaultColor, selectedColor;
     private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.base_lib_layout_nav_bar, this, false);
         addView(binding.getRoot());
-        binding.backTitle.setOnClickListener(new OnSingleClickListener() {
+        binding.ivNavigateBefore.setOnClickListener(new OnSingleClickListener() {
             @Override
             protected void onSingleClick(View view) {
                 if (backListener != null) {
@@ -61,7 +56,7 @@ public class SaasNavBar extends FrameLayout {
                 }
             }
         });
-        binding.tvRightTitle.setOnClickListener(new OnSingleClickListener() {
+        binding.tvRightText.setOnClickListener(new OnSingleClickListener() {
             @Override
             protected void onSingleClick(View view) {
                 if (submitListener != null) {
@@ -73,42 +68,37 @@ public class SaasNavBar extends FrameLayout {
     }
 
     public void setTitle(String str) {
-        binding.tvCenterTitle.setText(str);
+        binding.tvTitle.setText(str);
     }
 
     /**
      * 是否为自定义字体
      *
      * @param title
-     * @param isFonts
      */
-    public void setRightTitle(String title, boolean isFonts) {
-        if (isFonts) {
-            binding.tvRightTitle.setTypeface(Typeface.createFromAsset(getContext().getAssets(),
-                    "iconfont.ttf"));
-            binding.tvRightTitle.setTextSize(24);
-        }
-        binding.tvRightTitle.setText(title);
+    public void setRightTitle(String title) {
+        binding.tvRightText.setText(title);
+    }
+    /**
+     * 是否为自定义字体
+     *
+     * @param resId
+     */
+    public void setRightTitle(int resId) {
+        binding.tvRightText.setText(resId);
     }
 
     /**
      * 是否为自定义字体
      *
      * @param resId
-     * @param isFonts
      */
-    public void setRightTitle(int resId, boolean isFonts) {
-        if (isFonts) {
-            binding.tvRightTitle.setTypeface(Typeface.createFromAsset(getContext().getAssets(),
-                    "iconfont.ttf"));
-            binding.tvRightTitle.setTextSize(24);
-            binding.tvRightTitle.setTextColor(ColorUtils.getColor(R.color.base_bar_title_color));
-        }
-        binding.tvRightTitle.setText(resId);
+    public void setRightImage(int resId) {
+        binding.ivShare.setImageResource(resId);
     }
 
     public void setRightTextColor(int id) {
-        binding.tvRightTitle.setTextColor(id);
+        binding.tvRightText.setTextColor(id);
     }
 
     @Override
@@ -121,17 +111,15 @@ public class SaasNavBar extends FrameLayout {
         binding.toolbar.setBackground(background);
     }
 
-
     public void hideTitle(int i) {
-        binding.tvCenterTitle.setVisibility(i);
+        binding.tvTitle.setVisibility(i);
     }
-
-    public void hideRight(int i) {
-        binding.tvRightTitle.setVisibility(i);
+    public void hideRightTextView(int i) {
+        binding.tvRightText.setVisibility(i);
     }
 
     public void hideLeft(int i) {
-        binding.backTitle.setVisibility(i);
+        binding.ivNavigateBefore.setVisibility(i);
     }
 
     public interface BackListener {
@@ -149,9 +137,11 @@ public class SaasNavBar extends FrameLayout {
     public void setSubmitListener(SubmitListener submitListener) {
         this.submitListener = submitListener;
     }
-    public TextView getRightView(){
-        return  binding.tvRightTitle;
+    public TextView getRightTextView(){
+        return  binding.tvRightText;
     }
-
+    public ImageView getRightImageView(){
+        return  binding.ivShare;
+    }
 }
 

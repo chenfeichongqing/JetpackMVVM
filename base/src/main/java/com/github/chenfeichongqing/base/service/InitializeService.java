@@ -35,6 +35,8 @@ public class InitializeService extends IntentService {
 
     private void performInit() {
         LogUtils.vTag("InitializeService","performInit begin:" + System.currentTimeMillis());
+        //初始化第三方库
+
         LogUtils.vTag("InitializeService","performInit end:" + System.currentTimeMillis());
     }
 }

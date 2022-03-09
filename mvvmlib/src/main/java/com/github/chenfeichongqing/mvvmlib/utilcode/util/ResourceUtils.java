@@ -57,6 +57,22 @@ public final class ResourceUtils {
     }
 
     /**
+     * Return the string identifier by name.
+     *
+     * @return the string identifier by name
+     */
+    public static String getStringById(int resId) {
+        return Utils.getApp().getResources().getString(resId);
+    }
+
+
+    public static int getDimension(int resId) {
+        return Utils.getApp().getResources().getDimensionPixelOffset(resId);
+    }
+
+
+
+    /**
      * Return the color identifier by name.
      *
      * @param name The name of color.
@@ -298,4 +314,7 @@ public final class ResourceUtils {
                                             final String charsetName) {
         return UtilsBridge.inputStream2Lines(Utils.getApp().getResources().openRawResource(resId), charsetName);
     }
+
+
+
 }

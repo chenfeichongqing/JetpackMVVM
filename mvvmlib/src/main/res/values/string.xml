@@ -4,4 +4,19 @@
 
     <string name="permission_rationale_message">You have rejected us to apply for authorization, please agree to authorization, otherwise the function can\'t be used normally!</string>
     <string name="permission_denied_forever_message">We need some of the permissions you rejected or the system failed to apply failed, please manually set to the page authorize, otherwise the function can\'t be used normally!</string>
+    <string name="your_phone_does_not_install_qq">您的手机还没有安装QQ</string>
+    <string name="your_phone_does_not_install_wechat">您的手机还没有安装微信</string>
+    <string name="your_phone_does_not_install_weibo">您的手机还没有安装微博</string>
+    <string name="your_phone_does_not_install_qq_zone">您的手机还没有安装QQ空间</string>
+
+
+    <!-- 分享 -->
+    <string name="share_to">分享到</string>
+    <string name="wechat">微信</string>
+    <string name="wechat_memory">朋友圈</string>
+    <string name="qq_friends">QQ</string>
+    <string name="qq_zone">QQ空间</string>
+    <string name="weibo">微博</string>
+    <string name="more">更多</string>
+    <string name="share_unknown_error">分享出现未知异常</string>
 </resources>

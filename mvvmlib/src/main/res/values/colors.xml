@@ -82,4 +82,6 @@
 
     <!--会话导航栏文字颜色-->
     <color name="base_bar_title_color">@color/base_color_333333</color>
+
+    <color name="loading">#cdcdcd</color>
 </resources>

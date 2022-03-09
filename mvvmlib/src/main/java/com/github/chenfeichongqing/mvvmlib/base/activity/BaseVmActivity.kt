@@ -1,6 +1,7 @@
 package com.github.chenfeichongqing.mvvmlib.base.activity
 
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import com.github.chenfeichongqing.mvvmlib.base.network.manager.NetState
 import com.github.chenfeichongqing.mvvmlib.base.network.manager.NetworkStateManager
 import com.github.chenfeichongqing.mvvmlib.base.viewmodel.BaseViewModel
 import com.github.chenfeichongqing.mvvmlib.ext.getVmClazz
+import com.github.chenfeichongqing.mvvmlib.ext.util.notNull
 import com.github.chenfeichongqing.mvvmlib.utilcode.util.BarUtils
 import com.github.chenfeichongqing.mvvmlib.utilcode.util.ColorUtils
 import com.github.chenfeichongqing.mvvmlib.view.SaasNavBar
@@ -22,12 +24,7 @@ import com.google.android.material.appbar.AppBarLayout
  * 时间　: 2019/12/12
  * 描述　: ViewModelActivity基类，把ViewModel注入进来了
  */
-abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
-
-    /**
-     * 是否需要使用DataBinding 供子类BaseVmDbActivity修改，用户请慎动
-     */
-    private var isDataBinding= false
+abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
 
     //导航栏背景
     protected var appBar: AppBarLayout? = null
@@ -40,7 +37,6 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
 
     abstract fun layoutId(): Int
 
-
     open fun showLoading(message: String = "请求网络中..."){}
 
     open fun dismissLoading(){}
@@ -51,13 +47,14 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
         super.onCreate(savedInstanceState)
-        if (!isDataBinding) {
+        initDataBind().notNull({
+            setContentView(it)
+        }, {
             setContentView(layoutId())
-        } else {
-            initDataBind()
-        }
-        initstatusBar()
+        })
         init(savedInstanceState)
+        //状态栏的颜色
+        initstatusBar()
     }
 
     private fun init(savedInstanceState: Bundle?) {
@@ -76,7 +73,6 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
         navBar?.setBackListener {
             finish()
         }
-        navBar?.rightView?.setTextColor(ColorUtils.getColor(R.color.base_color_333333))
         setMainTitle("测试")
     }
 
@@ -127,16 +123,12 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
             })
         }
     }
-
-    fun userDataBinding(isDataBinding: Boolean) {
-        this.isDataBinding = isDataBinding
-    }
-
     /**
      * 供子类BaseVmDbActivity 初始化Databinding操作
      */
-    open fun initDataBind() {}
-
+    open fun initDataBind(): View? {
+        return null
+    }
 
     //是否状态栏字体黑色
     open fun isLight(): Boolean {

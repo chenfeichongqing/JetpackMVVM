@@ -13,7 +13,7 @@ import retrofit2.http.*
 interface ApiService {
 
     companion object {
-        const val SERVER_URL = "https://wanandroid.com/"
+        const val SERVER_URL = "http://1.14.108.171:8084/bill/"
     }
     /**
      * 登录
@@ -24,16 +24,5 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") pwd: String
     ): ApiResponse<UserInfo>
-
-    /**
-     * 注册
-     */
-    @FormUrlEncoded
-    @POST("user/register")
-    suspend fun register(
-        @Field("username") username: String, @Field("password") pwd: String, @Field(
-            "repassword"
-        ) rpwd: String
-    ): ApiResponse<Any>
 
 }

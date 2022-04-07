@@ -9,14 +9,16 @@ import com.github.chenfeichongqing.base.appViewModel
 import com.github.chenfeichongqing.base.databinding.ActivityLoginBinding
 import com.github.chenfeichongqing.base.ext.showMessage
 import com.github.chenfeichongqing.base.ui.MainActivity
+import com.github.chenfeichongqing.base.ui.common.BaseBillActivity
 import com.github.chenfeichongqing.base.util.CacheUtil
 import com.github.chenfeichongqing.mvvmlib.base.activity.BaseVmDbActivity
 import com.github.chenfeichongqing.mvvmlib.ext.parseState
 
- class LoginActivity : BaseVmDbActivity<LoginViewModel,ActivityLoginBinding>() {
+ class LoginActivity : BaseBillActivity<LoginViewModel,ActivityLoginBinding>() {
 
 
-    override fun initView(savedInstanceState: Bundle?) {
+     override fun setupViews() {
+         super.setupViews()
         mViewBind.viewmodel = mViewModel
         mViewBind.click = ProxyClick()
     }
@@ -63,4 +65,4 @@ import com.github.chenfeichongqing.mvvmlib.ext.parseState
                 mViewModel.isShowPwd.set(isChecked)
             }
     }
-}
+ }

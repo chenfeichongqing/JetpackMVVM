@@ -7,12 +7,18 @@ import com.github.chenfeichongqing.mvvmlib.base.appContext
 import com.github.chenfeichongqing.mvvmlib.base.network.BaseNetworkApi
 import com.github.chenfeichongqing.mvvmlib.base.network.interceptor.CacheInterceptor
 import com.github.chenfeichongqing.mvvmlib.base.network.interceptor.logging.LogInterceptor
+import com.github.chenfeichongqing.mvvmlib.ext.extension.logD
+import com.github.chenfeichongqing.mvvmlib.ext.extension.logV
+import com.github.chenfeichongqing.mvvmlib.utilcode.util.JsonUtils.formatJson
 import com.google.gson.GsonBuilder
-import okhttp3.Cache
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.Cache
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Response
+import retrofit2.Retrofit
 import java.io.File
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -72,7 +78,6 @@ class NetworkApi : BaseNetworkApi() {
     val cookieJar: PersistentCookieJar by lazy {
         PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(appContext))
     }
-
 }
 
 

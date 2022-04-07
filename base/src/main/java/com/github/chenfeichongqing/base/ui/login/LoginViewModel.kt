@@ -14,10 +14,10 @@ import com.github.chenfeichongqing.mvvmlib.state.ResultState
 
 class LoginViewModel : BaseViewModel() {
     //用户名
-    var username = StringObservableField()
+    var username = StringObservableField("cf")
 
     //密码(登录注册界面)
-    var password = StringObservableField()
+    var password = StringObservableField("123456")
 
     //是否显示明文密码（登录注册界面）
     var isShowPwd = BooleanObservableField()

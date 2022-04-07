@@ -5,6 +5,7 @@ import com.github.chenfeichongqing.mvvmlib.util.CharacterHandler.Companion.jsonF
 import com.github.chenfeichongqing.mvvmlib.util.UrlEncoderUtils.Companion.hasUrlEncoded
 import com.github.chenfeichongqing.mvvmlib.util.ZipHelper.Companion.decompressForGzip
 import com.github.chenfeichongqing.mvvmlib.util.ZipHelper.Companion.decompressToStringForZlib
+import com.github.chenfeichongqing.mvvmlib.utilcode.util.LogUtils
 import okhttp3.*
 import okio.Buffer
 import java.io.IOException
@@ -35,7 +36,7 @@ class LogInterceptor : Interceptor {
                     request.body()!!.contentType()
                 )
             ) {
-                mPrinter.printJsonRequest(request, parseParams(request))
+                LogUtils.d(formatJson(parseParams(request)))
             } else {
                 mPrinter.printFileRequest(request)
             }
@@ -43,8 +44,7 @@ class LogInterceptor : Interceptor {
         val logResponse =
             printLevel == Level.ALL || printLevel != Level.NONE && printLevel == Level.RESPONSE
         val t1 = if (logResponse) System.nanoTime() else 0
-        val originalResponse: Response
-        originalResponse = try {
+        val originalResponse = try {
             chain.proceed(request)
         } catch (e: Exception) {
             e.message?.let {
@@ -53,36 +53,15 @@ class LogInterceptor : Interceptor {
             throw e
         }
         val t2 = if (logResponse) System.nanoTime() else 0
+        LogUtils.d( "Received response for  ${request.url()} in ${(t2 - t1) / 1e6} ms\n")
         val responseBody = originalResponse.body()
-
         //打印响应结果
         var bodyString: String? = null
         if (responseBody != null && isParseable(responseBody.contentType())) {
             bodyString = printResult(request, originalResponse, logResponse)
         }
         if (logResponse) {
-            val segmentList =
-                request.url().encodedPathSegments()
-            val header: String = if (originalResponse.networkResponse() == null) {
-                originalResponse.headers().toString()
-            } else {
-                originalResponse.networkResponse()!!.request().headers().toString()
-            }
-            val code = originalResponse.code()
-            val isSuccessful = originalResponse.isSuccessful
-            val message = originalResponse.message()
-            val url = originalResponse.request().url().toString()
-            if (responseBody != null && isParseable(responseBody.contentType())) {
-                mPrinter.printJsonResponse(
-                    TimeUnit.NANOSECONDS.toMillis(t2 - t1), isSuccessful,
-                    code, header, responseBody.contentType(), bodyString, segmentList, message, url
-                )
-            } else {
-                mPrinter.printFileResponse(
-                    TimeUnit.NANOSECONDS.toMillis(t2 - t1),
-                    isSuccessful, code, header, segmentList, message, url
-                )
-            }
+            LogUtils.d(formatJson(bodyString))
         }
         return originalResponse
     }
@@ -280,6 +259,59 @@ class LogInterceptor : Interceptor {
             return if (i == -1) {
                 s
             } else s.substring(i + 1, s.length - 1)
+        }
+    }
+
+    /**
+     * 格式化json字符串
+     *
+     * @param jsonStr 需要格式化的json串
+     * @return 格式化后的json串
+     */
+    fun formatJson(jsonStr: String?): String? {
+        if (null == jsonStr || "" == jsonStr) return ""
+        val sb = StringBuilder()
+        var last = '\u0000'
+        var current = '\u0000'
+        var indent = 0
+        for (i in 0 until jsonStr.length) {
+            last = current
+            current = jsonStr[i]
+            when (current) {
+                '{', '[' -> {
+                    sb.append(current)
+                    sb.append('\n')
+                    indent++
+                    addIndentBlank(sb, indent)
+                }
+                '}', ']' -> {
+                    sb.append('\n')
+                    indent--
+                    addIndentBlank(sb, indent)
+                    sb.append(current)
+                }
+                ',' -> {
+                    sb.append(current)
+                    if (last != '\\') {
+                        sb.append('\n')
+                        addIndentBlank(sb, indent)
+                    }
+                }
+                else -> sb.append(current)
+            }
+        }
+        return sb.toString()
+    }
+
+    /**
+     * 添加space
+     *
+     * @param sb
+     * @param indent
+     */
+    private fun addIndentBlank(sb: StringBuilder, indent: Int) {
+        for (i in 0 until indent) {
+            sb.append('\t')
         }
     }
 }

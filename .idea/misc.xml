@@ -22,9 +22,13 @@
         <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/activity_splash.xml" value="0.1515625" />
         <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/content_main.xml" value="0.19375" />
         <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/fragment_dashboard.xml" value="0.16979166666666667" />
+        <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/item_main_bill.xml" value="0.1875" />
         <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/layout_custom_progress_dialog_view.xml" value="0.11484375" />
         <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/layout_empty.xml" value="0.1984375" />
+        <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/layout_footer_item.xml" value="0.1625" />
         <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/layout_fotter_loadmore.xml" value="0.153125" />
+        <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/layout_loading.xml" value="0.16666666666666666" />
+        <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/layout/layout_title_bar.xml" value="0.15260416666666668" />
         <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/menu/bottom_nav_menu.xml" value="0.14635416666666667" />
         <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/menu/menu_main.xml" value="0.1859375" />
         <entry key="..\:/project/2021/JetpackMVVM/base/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.20208333333333334" />
@@ -34,6 +38,7 @@
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/drawable/bar_arrows_left_black.xml" value="0.196875" />
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/drawable/bar_arrows_left_white.xml" value="0.196875" />
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/drawable/bar_drawable_placeholder.xml" value="0.196875" />
+        <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/drawable/base_lib_shape_app_toolbar_normal.xml" value="0.20462962962962963" />
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/drawable/base_lib_shape_nav_search_bar_edit_bg.xml" value="0.20572916666666666" />
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/drawable/common_loading_bg.xml" value="0.20208333333333334" />
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/drawable/ic_share_black_20dp.xml" value="0.25277777777777777" />
@@ -44,6 +49,10 @@
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/layout/base_lib_shape_nav_search_bar_edit_bg.xml" value="0.18802083333333333" />
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/layout/common_dialog_content.xml" value="0.1859375" />
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/layout/common_dialog_loading.xml" value="0.1859375" />
+        <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/layout/fd_base_lib_layout_nav_bar.xml" value="0.23703703703703705" />
+        <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/layout/layout_load_error_view.xml" value="0.15729166666666666" />
+        <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/layout/layout_loading.xml" value="0.15729166666666666" />
+        <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/layout/layout_view_stub_holder.xml" value="0.15729166666666666" />
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/layout/lib_layout_toolbar.xml" value="0.18072916666666666" />
         <entry key="..\:/project/2021/JetpackMVVM/mvvmlib/src/main/res/layout/utils_toast_view.xml" value="0.1328125" />
       </map>

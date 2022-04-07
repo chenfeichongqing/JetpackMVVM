@@ -34,6 +34,10 @@ class WelcomeActivity : BaseActivity() {
         }
     }
 
+    override fun isFullScreen(): Boolean {
+        return true
+    }
+
     override fun setupViews() {
         super.setupViews()
         findViewById<ImageView>(R.id.ivSlogan).startAnimation(alphaAnimation)

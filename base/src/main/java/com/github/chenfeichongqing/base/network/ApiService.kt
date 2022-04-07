@@ -1,7 +1,9 @@
 package com.github.chenfeichongqing.base.network
 
 
+import com.github.chenfeichongqing.base.data.model.bean.ApiPagerResponse
 import com.github.chenfeichongqing.base.data.model.bean.ApiResponse
+import com.github.chenfeichongqing.base.data.model.bean.BillInfo
 import com.github.chenfeichongqing.base.data.model.bean.UserInfo
 import retrofit2.http.*
 
@@ -24,5 +26,13 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") pwd: String
     ): ApiResponse<UserInfo>
+
+
+    @FormUrlEncoded
+    @POST("bill/list")
+    suspend fun getBillBypage(
+        @Field("page") page: Int,
+        @Field("size") size: Int
+    ): ApiResponse<ApiPagerResponse<List<BillInfo>>>
 
 }

@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.CallSuper
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +18,6 @@ import com.github.chenfeichongqing.mvvmlib.ext.getVmClazz
 import com.github.chenfeichongqing.mvvmlib.ext.util.notNull
 import com.github.chenfeichongqing.mvvmlib.utilcode.util.BarUtils
 import com.github.chenfeichongqing.mvvmlib.utilcode.util.ColorUtils
-import com.github.chenfeichongqing.mvvmlib.view.SaasNavBar
 import com.google.android.material.appbar.AppBarLayout
 
 /**
@@ -26,26 +27,15 @@ import com.google.android.material.appbar.AppBarLayout
  */
 abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
 
-    //导航栏背景
-    protected var appBar: AppBarLayout? = null
-
-    protected var navBar: SaasNavBar? = null
-
-    protected var toolbar: Toolbar? = null
 
     lateinit var mViewModel: VM
-
+    var navigateBefore: ImageView? = null;
+    var tvTitle: TextView? = null;
     abstract fun layoutId(): Int
-
-    open fun showLoading(message: String = "请求网络中..."){}
-
-    open fun dismissLoading(){}
+    abstract fun showLoading(message: String = "请求网络中...")
+    abstract fun dismissLoading()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (isFullScreen()) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE)
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        }
         super.onCreate(savedInstanceState)
         initDataBind().notNull({
             setContentView(it)
@@ -60,20 +50,10 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
     private fun init(savedInstanceState: Bundle?) {
         mViewModel = createViewModel()
         registerUiChange()
-        initView(savedInstanceState)
         createObserver()
         NetworkStateManager.instance.mNetworkStateCallback.observe(this, Observer {
             onNetworkStateChanged(it)
         })
-    }
-
-    open fun initView(savedInstanceState: Bundle?){
-        toolbar = findViewById(R.id.toolbar)
-        navBar = findViewById(R.id.nav_bar)
-        navBar?.setBackListener {
-            finish()
-        }
-        setMainTitle("测试")
     }
 
     /**
@@ -142,12 +122,6 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
     private fun initstatusBar(){
         BarUtils.setStatusBarLightMode(this, isLight())
         BarUtils.setStatusBarColor(this, statusColor())
-
-    }
-
-    //是否全屏
-    open fun isFullScreen(): Boolean {
-        return false
     }
     /**
      * 设置主标题
@@ -155,7 +129,10 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
      * @param title 标题字符串
      */
     protected fun setMainTitle(title: String?) {
-        navBar?.setTitle(title)
+        tvTitle?.text = title
     }
+
+
+
 
 }

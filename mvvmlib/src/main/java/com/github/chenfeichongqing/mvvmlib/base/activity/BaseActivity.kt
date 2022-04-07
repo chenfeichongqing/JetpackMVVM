@@ -20,11 +20,17 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewStub
+import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.CallSuper
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import com.github.chenfeichongqing.mvvmlib.R
+import com.github.chenfeichongqing.mvvmlib.callback.RequestLifecycle
 import com.github.chenfeichongqing.mvvmlib.util.ActivityCollector
 import com.github.chenfeichongqing.mvvmlib.util.ShareUtil
 import com.gyf.barlibrary.ImmersionBar
@@ -37,7 +43,7 @@ import java.lang.ref.WeakReference
  * @since  2020/4/29
  */
 @SuppressLint("Registered")
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity(){
     /**
      * 判断当前Activity是否在前台。
      */
@@ -51,6 +57,13 @@ open class BaseActivity : AppCompatActivity() {
     /** 当前Activity的弱引用，防止内存泄露  */
     private var activityWR: WeakReference<Activity>? = null
 
+
+
+    /**
+     * Fragment中由于服务器或网络异常导致加载失败显示的布局。
+     */
+    private var loadErrorView: View? = null
+
     /**
      * 日志输出标志
      */
@@ -61,8 +74,16 @@ open class BaseActivity : AppCompatActivity() {
         activity = this
         activityWR = WeakReference(activity!!)
         ActivityCollector.pushTask(activityWR)
+        if (isFullScreen()) {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
 
     }
+
     override fun onResume() {
         super.onResume()
         isActive = true
@@ -81,13 +102,12 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun setContentView(layoutResID: Int) {
         super.setContentView(layoutResID)
-       // setStatusBarBackground(R.color.colorPrimaryDark)
         setupViews()
     }
 
     override fun setContentView(layoutView: View) {
         super.setContentView(layoutView)
-       // setStatusBarBackground(R.color.colorPrimaryDark)
+        // setStatusBarBackground(R.color.colorPrimaryDark)
         setupViews()
     }
 
@@ -102,7 +122,8 @@ open class BaseActivity : AppCompatActivity() {
      * 设置状态栏背景色
      */
     open fun setStatusBarBackground(@ColorRes statusBarColor: Int) {
-        ImmersionBar.with(this).statusBarDarkFont(true, 0.2f).statusBarColor(statusBarColor).fitsSystemWindows(true).init()
+        ImmersionBar.with(this).statusBarDarkFont(true, 0.2f).statusBarColor(statusBarColor)
+            .fitsSystemWindows(true).init()
     }
 
     /**
@@ -114,4 +135,10 @@ open class BaseActivity : AppCompatActivity() {
     protected fun share(shareContent: String, shareType: Int) {
         ShareUtil.share(this, shareContent, shareType)
     }
+
+    //是否全屏
+    open fun isFullScreen(): Boolean {
+        return false
+    }
+
 }

@@ -9,7 +9,7 @@ import com.github.chenfeichongqing.databinding.ActivityMainBinding
 class MainActivity : BaseVmDbActivity<BaseViewModel, ActivityMainBinding>() {
 
     override fun layoutId(): Int {
-       return R.layout.activity_main
+       return R.layout.fragment_main
     }
     override fun initView(savedInstanceState: Bundle?) {
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.github.chenfeichongqing.mvvmlib.base.viewmodel.BaseViewModel
+import com.github.chenfeichongqing.mvvmlib.ext.inflateBindingWithGeneric
 
 /**
  * 作者　: hegaojian
@@ -24,7 +25,7 @@ abstract class BaseVmDbFragment<VM : BaseViewModel, DB : ViewDataBinding> : Base
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mDatabind = DataBindingUtil.inflate(inflater, layoutId(), container, false)
+        mDatabind = inflateBindingWithGeneric(layoutInflater,container,false)
         mDatabind.lifecycleOwner = this
         return mDatabind.root
     }

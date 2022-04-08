@@ -2,16 +2,15 @@ package com.github.chenfeichongqing.base.ui.login
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.widget.CompoundButton
 import androidx.lifecycle.Observer
 import com.github.chenfeichongqing.base.appViewModel
 import com.github.chenfeichongqing.base.databinding.ActivityLoginBinding
 import com.github.chenfeichongqing.base.ext.showMessage
 import com.github.chenfeichongqing.base.ui.MainActivity
+import com.github.chenfeichongqing.base.ui.MainFragment
 import com.github.chenfeichongqing.base.ui.common.BaseBillActivity
 import com.github.chenfeichongqing.base.util.CacheUtil
-import com.github.chenfeichongqing.mvvmlib.base.activity.BaseVmDbActivity
 import com.github.chenfeichongqing.mvvmlib.ext.parseState
 
  class LoginActivity : BaseBillActivity<LoginViewModel,ActivityLoginBinding>() {

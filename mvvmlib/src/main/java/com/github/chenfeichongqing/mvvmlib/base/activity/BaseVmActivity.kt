@@ -31,7 +31,7 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
     lateinit var mViewModel: VM
     var navigateBefore: ImageView? = null;
     var tvTitle: TextView? = null;
-    abstract fun layoutId(): Int
+
     abstract fun showLoading(message: String = "请求网络中...")
     abstract fun dismissLoading()
 
@@ -71,7 +71,11 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
     /**
      * 创建LiveData数据观察者
      */
-    abstract fun createObserver()
+    open fun createObserver(){}
+
+    open fun layoutId(): Int{
+        return  0
+    }
 
     /**
      * 注册UI 事件
@@ -131,8 +135,4 @@ abstract class BaseVmActivity<VM : BaseViewModel> : BaseActivity() {
     protected fun setMainTitle(title: String?) {
         tvTitle?.text = title
     }
-
-
-
-
 }

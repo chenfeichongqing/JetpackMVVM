@@ -36,7 +36,9 @@ abstract class BaseVmFragment<VM : BaseViewModel> : Fragment() {
     /**
      * 当前Fragment绑定的视图布局
      */
-    abstract fun layoutId(): Int
+    open fun layoutId(): Int{
+        return  0;
+    }
 
 
     override fun onCreateView(

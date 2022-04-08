@@ -15,7 +15,7 @@ class MainRepoPagingSource(private val mainPageService: ApiService) : PagingSour
             val repoResponse = mainPageService.getBillBypage(page,pageSize).data
             val repoItems = repoResponse.list
             val prevKey = if (page > 1) page - 1 else null
-            val nextKey = if (repoItems.isNotEmpty()) page + 1 else null
+            val nextKey = if (repoResponse.hasNextPage) page + 1 else null
             LoadResult.Page(repoItems, prevKey, nextKey)
         } catch (e: Exception) {
             e.printStackTrace()

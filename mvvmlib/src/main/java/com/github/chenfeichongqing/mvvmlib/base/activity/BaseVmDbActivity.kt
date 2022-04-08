@@ -13,7 +13,6 @@ import com.github.chenfeichongqing.mvvmlib.ext.inflateBindingWithGeneric
  */
 abstract class BaseVmDbActivity<VM : BaseViewModel, DB : ViewDataBinding> : BaseVmActivity<VM>() {
 
-    override fun layoutId(): Int = 0
 
     lateinit var mViewBind: DB
 

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/main_top_bg"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/icon_menu_setting" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="主页"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/font_16" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/iv_chart_white" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_today"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="15dp"
+                                android:text="今日支出"
+                                android:textColor="@color/white"
+                                android:textSize="15sp" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_today"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:text="50"
+                                android:textColor="@color/white"
+                                android:textSize="20sp" />
+
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_month"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="15dp"
+                                android:text="本月支出"
+                                android:textColor="@color/white"
+                                android:textSize="15sp" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_month"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:text="50"
+                                android:textColor="@color/white"
+                                android:textSize="20sp" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mainRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </FrameLayout>
+</layout>
